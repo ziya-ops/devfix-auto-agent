@@ -1,0 +1,7 @@
+venv/
+.claude/
+.env
+.DS_Store
+__pycache__/
+devfix_graph.pkl
+.env.example
