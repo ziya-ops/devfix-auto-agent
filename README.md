@@ -22,7 +22,7 @@ Tech Topics to build this solution
 - pytest for deterministic evaluation
 - shared state management
 
-- obeservability (langsmith)
+- observability (langsmith)
 - governance layer (safety guardrails, human in the loop)
 - evaluation metrics
 - audit logging and traceability

@@ -1,4 +1,4 @@
-from typing import TypedDict, Annotated
+from typing import TypedDict, Annotated, Optional
 from langgraph.graph.message import add_messages
 
 class AgentState(TypedDict):
@@ -8,3 +8,8 @@ class AgentState(TypedDict):
     error: str
     test_results: str
     attempts: int
+    approved: bool
+    total_cost: float
+    latency_ms: float
+    audit_log: list
+    run_id: Optional[str]

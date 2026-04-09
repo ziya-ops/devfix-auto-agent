@@ -14,7 +14,7 @@ def execute_code_in_docker(code: str) -> tuple[bool, str]:
             temp_file = f.name
 
         try:
-            # Run Docker using subprocess (more reliable than deprecated docker SDK)
+            # Run Docker using subprocess with pytest installed
             cmd = [
                 "docker", "run", "--rm",
                 "-v", f"{temp_file}:/tmp/code.py",
@@ -22,7 +22,7 @@ def execute_code_in_docker(code: str) -> tuple[bool, str]:
                 "--cpu-quota", "50000",
                 "python:3.12-slim",
                 "sh", "-c",
-                "python -m pytest /tmp/code.py -q --tb=no"
+                "pip install pytest -q && python -m pytest /tmp/code.py -q --tb=no"
             ]
 
             result = subprocess.run(
@@ -36,8 +36,13 @@ def execute_code_in_docker(code: str) -> tuple[bool, str]:
             if result.stderr:
                 output += "\n" + result.stderr.strip()
 
-            success = "1 passed" in output or ("passed" in output and "failed" not in output)
-            return success, output
+            # Filter out gRPC warnings
+            output_lines = [line for line in output.split('\n')
+                          if 'ev_poll_posix.cc' not in line and 'FD from fork parent' not in line]
+            clean_output = '\n'.join(output_lines).strip()
+
+            success = "1 passed" in clean_output or ("passed" in clean_output and "failed" not in clean_output)
+            return success, clean_output
 
         finally:
             # Clean up temp file
