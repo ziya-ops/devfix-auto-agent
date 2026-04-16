@@ -58,8 +58,8 @@ if __name__ == "__main__":
     print(f"Attempts used: {final_state.get('attempts', 0)}")
     print(f"Total latency: {final_state['latency_ms']:.2f} ms")
     print(f"Total cost tracked: ${final_state.get('total_cost', 0):.4f}")
-    print(f"LangSmith Trace ID: {final_state.get('run_id')}")
-    print("Full trace and audit log available in LangSmith dashboard.")
+    print(f"Langfuse Trace ID: {final_state.get('run_id')}")
+    print("Full trace and audit log available in Langfuse dashboard.")
 
     if final_state.get("run_id"):
         log_metric(final_state["run_id"], "success", 1.0 if "passed" in final_state.get("test_results", "") else 0.0)
